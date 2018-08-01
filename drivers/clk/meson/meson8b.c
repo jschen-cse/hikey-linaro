@@ -96,6 +96,11 @@ static struct clk_fixed_rate meson8b_xtal = {
 
 static struct clk_regmap meson8b_fixed_pll = {
 	.data = &(struct meson_clk_pll_data){
+		.en = {
+			.reg_off = HHI_MPLL_CNTL,
+			.shift   = 30,
+			.width   = 1,
+		},
 		.m = {
 			.reg_off = HHI_MPLL_CNTL,
 			.shift   = 0,
@@ -137,6 +142,11 @@ static struct clk_regmap meson8b_fixed_pll = {
 
 static struct clk_regmap meson8b_vid_pll = {
 	.data = &(struct meson_clk_pll_data){
+		.en = {
+			.reg_off = HHI_VID_PLL_CNTL,
+			.shift   = 30,
+			.width   = 1,
+		},
 		.m = {
 			.reg_off = HHI_VID_PLL_CNTL,
 			.shift   = 0,
@@ -173,6 +183,11 @@ static struct clk_regmap meson8b_vid_pll = {
 
 static struct clk_regmap meson8b_sys_pll = {
 	.data = &(struct meson_clk_pll_data){
+		.en = {
+			.reg_off = HHI_SYS_PLL_CNTL,
+			.shift   = 30,
+			.width   = 1,
+		},
 		.m = {
 			.reg_off = HHI_SYS_PLL_CNTL,
 			.shift   = 0,
