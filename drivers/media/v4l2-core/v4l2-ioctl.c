@@ -2204,6 +2204,7 @@ static int v4l_s_selection(const struct v4l2_ioctl_ops *ops,
 static int v4l_g_crop(const struct v4l2_ioctl_ops *ops,
 				struct file *file, void *fh, void *arg)
 {
+	struct video_device *vfd = video_devdata(file);
 	struct v4l2_crop *p = arg;
 	struct v4l2_selection s = {
 		.type = p->type,
@@ -2220,6 +2221,10 @@ static int v4l_g_crop(const struct v4l2_ioctl_ops *ops,
 	else
 		s.target = V4L2_SEL_TGT_CROP;
 
+	if (test_bit(V4L2_FL_QUIRK_INVERTED_CROP, &vfd->flags))
+		s.target = s.target == V4L2_SEL_TGT_COMPOSE ?
+			V4L2_SEL_TGT_CROP : V4L2_SEL_TGT_COMPOSE;
+
 	ret = v4l_g_selection(ops, file, fh, &s);
 
 	/* copying results to old structure on success */
@@ -2231,6 +2236,7 @@ static int v4l_g_crop(const struct v4l2_ioctl_ops *ops,
 static int v4l_s_crop(const struct v4l2_ioctl_ops *ops,
 				struct file *file, void *fh, void *arg)
 {
+	struct video_device *vfd = video_devdata(file);
 	struct v4l2_crop *p = arg;
 	struct v4l2_selection s = {
 		.type = p->type,
@@ -2247,12 +2253,17 @@ static int v4l_s_crop(const struct v4l2_ioctl_ops *ops,
 	else
 		s.target = V4L2_SEL_TGT_CROP;
 
+	if (test_bit(V4L2_FL_QUIRK_INVERTED_CROP, &vfd->flags))
+		s.target = s.target == V4L2_SEL_TGT_COMPOSE ?
+			V4L2_SEL_TGT_CROP : V4L2_SEL_TGT_COMPOSE;
+
 	return v4l_s_selection(ops, file, fh, &s);
 }
 
 static int v4l_cropcap(const struct v4l2_ioctl_ops *ops,
 				struct file *file, void *fh, void *arg)
 {
+	struct video_device *vfd = video_devdata(file);
 	struct v4l2_cropcap *p = arg;
 	struct v4l2_selection s = { .type = p->type };
 	int ret = 0;
@@ -2289,13 +2300,17 @@ static int v4l_cropcap(const struct v4l2_ioctl_ops *ops,
 	else
 		s.target = V4L2_SEL_TGT_CROP_BOUNDS;
 
+	if (test_bit(V4L2_FL_QUIRK_INVERTED_CROP, &vfd->flags))
+		s.target = s.target == V4L2_SEL_TGT_COMPOSE_BOUNDS ?
+			V4L2_SEL_TGT_CROP_BOUNDS : V4L2_SEL_TGT_COMPOSE_BOUNDS;
+
 	ret = v4l_g_selection(ops, file, fh, &s);
 	if (ret)
 		return ret;
 	p->bounds = s.r;
 
 	/* obtaining defrect */
-	if (V4L2_TYPE_IS_OUTPUT(p->type))
+	if (s.target == V4L2_SEL_TGT_COMPOSE_BOUNDS)
 		s.target = V4L2_SEL_TGT_COMPOSE_DEFAULT;
 	else
 		s.target = V4L2_SEL_TGT_CROP_DEFAULT;
