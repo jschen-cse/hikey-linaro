@@ -131,6 +131,10 @@
 		compatible = "amlogic,meson-gxbb-sm";
 	};
 
+	reboot-mode {
+		compatible = "amlogic,meson-reboot-mode";
+	};
+
 	soc {
 		compatible = "simple-bus";
 		#address-cells = <2>;

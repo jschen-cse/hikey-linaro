@@ -76,6 +76,10 @@
 		l2: l2-cache0 {
 			compatible = "cache";
 		};
+
+		reboot-mode {
+			compatible = "amlogic,meson-reboot-mode";
+		};
 	};
 
 	arm-pmu {

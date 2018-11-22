@@ -1,0 +1,38 @@
+Reboot mode driver for Amlogic S905/GX*/AXG SoCs
+
+In the Amlogic SoCs the standard SYSTEM_RESET PSCI call is extended to support
+an additional parameter (arg0) used to save the reboot reason / mode into the
+special register AO_SEC_SD_CFG15. This register won't be reset until the
+RESET_N pin on the chip is set to low. The bootloader can read it and take
+different actions according to the argument stored.
+
+The association between the reboot code and the reboot reason seems to be
+hardcoded and in some cases the code is set without kernel intervention (i.e.
+when the reboot is caused by the watchdog).
+
+From the Amlogic SDK:
+
+0:     Cold boot                 cold_boot
+1:     Normal boot               normal
+2:     Factory reset             factory_reset
+3:     Upgrade system            update
+4:     Fastboot                  fastboot
+5:     Suspend                   suspend_off
+6:     Hibernate                 hibernate
+7:     Fastboot Bootloader       bootloader
+8:     Shutdown reboot           shutdown_reboot
+9:     RPMBP reboot              rpmbp
+10:    reserved
+11:    Crash dump                crash_dump
+12:    Kernel panic              kernel_panic
+13:    Watchdog reboot           watchdog_reboot
+14:    reserved
+15:    reserved
+
+Required properties:
+- compatible:		Must contain: "amlogic,meson-reboot-mode"
+
+Example:
+	reboot-mode {
+	        compatible = "amlogic,meson-reboot-mode";
+	};

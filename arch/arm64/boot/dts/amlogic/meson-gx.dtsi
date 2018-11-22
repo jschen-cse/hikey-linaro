@@ -132,6 +132,11 @@
 		sm: secure-monitor {
 			compatible = "amlogic,meson-gx-sm", "amlogic,meson-gxbb-sm";
 		};
+
+		reboot-mode {
+			compatible = "amlogic,meson-reboot-mode";
+		};
+
 	};
 
 	efuse: efuse {
