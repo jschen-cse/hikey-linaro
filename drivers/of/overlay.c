@@ -827,7 +827,7 @@ static void free_overlay_changeset(struct overlay_changeset *ovcs)
  * id is returned to *ovcs_id.
  */
 
-static int of_overlay_apply(const void *fdt, struct device_node *tree,
+int of_overlay_apply(const void *fdt, struct device_node *tree,
 		int *ovcs_id)
 {
 	struct overlay_changeset *ovcs;

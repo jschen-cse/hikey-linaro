@@ -1414,7 +1414,8 @@ struct of_overlay_notify_data {
 };
 
 #ifdef CONFIG_OF_OVERLAY
-
+int of_overlay_apply(const void *fdt, struct device_node *tree,
+		int *ovcs_id);
 int of_overlay_fdt_apply(const void *overlay_fdt, u32 overlay_fdt_size,
 			 int *ovcs_id);
 int of_overlay_remove(int *ovcs_id);

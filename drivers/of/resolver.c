@@ -271,12 +271,19 @@ int of_resolve_phandles(struct device_node *overlay)
 		goto out;
 	}
 
+/*
+ * XXX:This is a hack to re-enable the overlay_mgr, as changes
+ * upstream has disabled the ability to apply fragments that are
+ * included in the base dtb. Long term we need to move away from
+ * the overlay_mgr.  -jstultz
+ */
+#if 0
 	if (!of_node_check_flag(overlay, OF_DETACHED)) {
 		pr_err("overlay not detached\n");
 		err = -EINVAL;
 		goto out;
 	}
-
+#endif
 	phandle_delta = live_tree_max_phandle() + 1;
 	adjust_overlay_phandles(overlay, phandle_delta);
 
