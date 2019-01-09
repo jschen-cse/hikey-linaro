@@ -29,8 +29,16 @@ DEFINE_MUTEX(of_overlay_mgr_mutex);
 static int of_overlay_mgr_apply_overlay(struct device_node *onp)
 {
 	int ret;
+	int id;
+	/*
+	 * XXX: HACK: of_overlay_apply() is really an internal function
+	 * expects to manage the freeing of the device_node itself. So
+	 * create a copy to avoid it disappearing under us. -jstultz
+	 */
+	struct device_node* copy_onp = kmalloc(sizeof(struct device_node), GFP_KERNEL);
+	memcpy(copy_onp, onp, sizeof(struct device_node));
 
-	ret = of_overlay_create(onp);
+	ret = of_overlay_apply(NULL, copy_onp, &id);
 	if (ret < 0) {
 		pr_err("overlay_mgr: fail to create overlay: %d\n", ret);
 		of_node_put(onp);
