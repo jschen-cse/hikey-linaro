@@ -558,7 +558,7 @@ static void __v4l2_async_notifier_cleanup(struct v4l2_async_notifier *notifier)
 	struct v4l2_async_subdev *asd, *tmp;
 	unsigned int i;
 
-	if (!notifier)
+	if (!notifier || !notifier->asd_list.next)
 		return;
 
 	if (notifier->subdevs) {
