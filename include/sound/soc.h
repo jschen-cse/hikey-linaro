@@ -797,6 +797,14 @@ struct snd_soc_component_driver {
 	int probe_order;
 	int remove_order;
 
+	/*
+	 * signal if the module handling the component should not be removed
+	 * if a pcm is open. Setting this would prevent the module
+	 * refcount being incremented in probe() but allow it be incremented
+	 * when a pcm is opened and decremented when it is closed.
+	 */
+	unsigned int module_get_upon_open:1;
+
 	/* bits */
 	unsigned int idle_bias_on:1;
 	unsigned int suspend_bias_off:1;
@@ -1021,6 +1029,8 @@ struct snd_soc_card {
 	struct mutex mutex;
 	struct mutex dapm_mutex;
 
+	spinlock_t dpcm_lock;
+
 	bool instantiated;
 	bool topology_shortname_created;
 
@@ -1152,6 +1162,13 @@ struct snd_soc_pcm_runtime {
 	unsigned int dev_registered:1;
 	unsigned int pop_wait:1;
 };
+#define for_each_rtd_codec_dai(rtd, i, dai)\
+	for ((i) = 0;						       \
+	     ((i) < rtd->num_codecs) && ((dai) = rtd->codec_dais[i]); \
+	     (i)++)
+#define for_each_rtd_codec_dai_rollback(rtd, i, dai)		\
+	for (; ((i--) >= 0) && ((dai) = rtd->codec_dais[i]);)
+
 
 /* mixer control */
 struct soc_mixer_control {
