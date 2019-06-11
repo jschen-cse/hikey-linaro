@@ -9,7 +9,7 @@ KERNEL_DIR=hikey-linaro
 POST_DEFCONFIG_CMDS="check_defconfig"
 CLANG_PREBUILT_BIN=prebuilts-master/clang/host/linux-x86/clang-r353983c/bin
 LINUX_GCC_CROSS_COMPILE_PREBUILTS_BIN=prebuilts/gcc/linux-x86/aarch64/aarch64-linux-android-4.9/bin
-LZ4_PREBUILTS_BIN=prebuilts-master/misc/linux-x86/lz4
+LZ4_PREBUILTS_BIN=prebuilts/misc/linux-x86/lz4
 FILES="
 arch/arm64/boot/dts/amlogic/meson-g12a-sei510.dtb
 arch/arm64/boot/Image
