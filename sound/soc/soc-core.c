@@ -420,15 +420,6 @@ struct snd_soc_pcm_runtime *snd_soc_get_pcm_runtime(struct snd_soc_card *card,
 }
 EXPORT_SYMBOL_GPL(snd_soc_get_pcm_runtime);
 
-static void codec2codec_close_delayed_work(struct work_struct *work)
-{
-	/* Currently nothing to do for c2c links
-	 * Since c2c links are internal nodes in the DAPM graph and
-	 * don't interface with the outside world or application layer
-	 * we don't have to do any special handling on close.
-	 */
-}
-
 #ifdef CONFIG_PM_SLEEP
 /* powers down audio subsystem for suspend */
 int snd_soc_suspend(struct device *dev)
@@ -1548,30 +1539,21 @@ static int soc_probe_link_dais(struct snd_soc_card *card,
 					 dai_link->stream_name);
 			return ret;
 		}
-	} else {
-
-		if (!dai_link->params) {
-			/* create the pcm */
-			ret = soc_new_pcm(rtd, num);
-			if (ret < 0) {
-				dev_err(card->dev, "ASoC: can't create pcm %s :%d\n",
-				       dai_link->stream_name, ret);
-				return ret;
-			}
-			ret = soc_link_dai_pcm_new(&cpu_dai, 1, rtd);
-			if (ret < 0)
-				return ret;
-			ret = soc_link_dai_pcm_new(rtd->codec_dais,
-						   rtd->num_codecs, rtd);
-			if (ret < 0)
-				return ret;
-		} else {
-			INIT_DELAYED_WORK(&rtd->delayed_work,
-						codec2codec_close_delayed_work);
-		}
 	}
 
-	return 0;
+	/* create the pcm */
+	ret = soc_new_pcm(rtd, num);
+	if (ret < 0) {
+		dev_err(card->dev, "ASoC: can't create pcm %s :%d\n",
+			dai_link->stream_name, ret);
+		return ret;
+	}
+	ret = soc_link_dai_pcm_new(&cpu_dai, 1, rtd);
+	if (ret < 0)
+		return ret;
+	ret = soc_link_dai_pcm_new(rtd->codec_dais,
+				   rtd->num_codecs, rtd);
+	return ret;
 }
 
 static int soc_bind_aux_dev(struct snd_soc_card *card, int num)
