@@ -3716,11 +3716,8 @@ static int snd_soc_dai_link_event(struct snd_soc_dapm_widget *w,
 						ret);
 					goto out;
 				}
-				source->active++;
 			}
-			ret = soc_dai_hw_params(&substream, params, source);
-			if (ret < 0)
-				goto out;
+			source->active++;
 		}
 
 		substream.stream = SNDRV_PCM_STREAM_PLAYBACK;
@@ -3736,8 +3733,23 @@ static int snd_soc_dai_link_event(struct snd_soc_dapm_widget *w,
 						ret);
 					goto out;
 				}
-				sink->active++;
 			}
+			sink->active++;
+		}
+
+		substream.stream = SNDRV_PCM_STREAM_CAPTURE;
+		snd_soc_dapm_widget_for_each_source_path(w, path) {
+			source = path->source->priv;
+
+			ret = soc_dai_hw_params(&substream, params, source);
+			if (ret < 0)
+				goto out;
+		}
+
+		substream.stream = SNDRV_PCM_STREAM_PLAYBACK;
+		snd_soc_dapm_widget_for_each_sink_path(w, path) {
+			sink = path->sink->priv;
+
 			ret = soc_dai_hw_params(&substream, params, sink);
 			if (ret < 0)
 				goto out;
@@ -3776,6 +3788,19 @@ static int snd_soc_dai_link_event(struct snd_soc_dapm_widget *w,
 			if (source->driver->ops->hw_free)
 				source->driver->ops->hw_free(&substream,
 							     source);
+		}
+
+		substream.stream = SNDRV_PCM_STREAM_PLAYBACK;
+		snd_soc_dapm_widget_for_each_sink_path(w, path) {
+			sink = path->sink->priv;
+
+			if (sink->driver->ops->hw_free)
+				sink->driver->ops->hw_free(&substream, sink);
+		}
+
+		substream.stream = SNDRV_PCM_STREAM_CAPTURE;
+		snd_soc_dapm_widget_for_each_source_path(w, path) {
+			source = path->source->priv;
 
 			source->active--;
 			if (source->driver->ops->shutdown)
@@ -3786,9 +3811,6 @@ static int snd_soc_dai_link_event(struct snd_soc_dapm_widget *w,
 		substream.stream = SNDRV_PCM_STREAM_PLAYBACK;
 		snd_soc_dapm_widget_for_each_sink_path(w, path) {
 			sink = path->sink->priv;
-
-			if (sink->driver->ops->hw_free)
-				sink->driver->ops->hw_free(&substream, sink);
 
 			sink->active--;
 			if (sink->driver->ops->shutdown)
