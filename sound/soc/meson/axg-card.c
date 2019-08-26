@@ -546,6 +546,9 @@ static int axg_card_add_link(struct snd_soc_card *card, struct device_node *np,
 	if (ret)
 		return ret;
 
+	/* make sure the dummy codec is not used */
+	dai_link->platform_of_node = dai_link->cpu_of_node;
+
 	if (axg_card_cpu_is_playback_fe(dai_link->cpu_of_node))
 		ret = axg_card_set_fe_link(card, dai_link, np, true);
 	else if (axg_card_cpu_is_capture_fe(dai_link->cpu_of_node))
