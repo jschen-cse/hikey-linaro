@@ -65,6 +65,13 @@
 			linux,code = <BTN_2>;
 			gpios = <&gpio_ao GPIOAO_2 GPIO_ACTIVE_LOW>;
 		};
+
+		mic_mute {
+			label = "MicMute";
+			linux,code = <SW_MUTE_DEVICE>;
+			linux,input-type = <EV_SW>;
+			gpios = <&gpio_ao GPIOE_2 GPIO_ACTIVE_LOW>;
+		};
 	};
 
 	hdmi-connector {
