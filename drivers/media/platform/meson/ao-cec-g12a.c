@@ -682,18 +682,12 @@ static int meson_ao_cec_g12a_probe(struct platform_device *pdev)
 	spin_lock_init(&ao_cec->cec_reg_lock);
 	ao_cec->pdev = pdev;
 
-	ao_cec->notify = cec_notifier_get(hdmi_dev);
-	if (!ao_cec->notify)
-		return -ENOMEM;
-
 	ao_cec->adap = cec_allocate_adapter(&meson_ao_cec_g12a_ops, ao_cec,
 					    "meson_g12a_ao_cec",
 					    CEC_CAP_DEFAULTS,
 					    CEC_MAX_LOG_ADDRS);
-	if (IS_ERR(ao_cec->adap)) {
-		ret = PTR_ERR(ao_cec->adap);
-		goto out_probe_notify;
-	}
+	if (IS_ERR(ao_cec->adap))
+		return PTR_ERR(ao_cec->adap);
 
 	ao_cec->adap->owner = THIS_MODULE;
 
@@ -754,11 +748,15 @@ static int meson_ao_cec_g12a_probe(struct platform_device *pdev)
 
 	platform_set_drvdata(pdev, ao_cec);
 
-	ret = cec_register_adapter(ao_cec->adap, &pdev->dev);
-	if (ret < 0) {
-		cec_notifier_put(ao_cec->notify);
+	ao_cec->notify = cec_notifier_get(hdmi_dev);
+	if (!ao_cec->notify) {
+		ret = -ENOMEM;
 		goto out_probe_core_clk;
 	}
+
+	ret = cec_register_adapter(ao_cec->adap, &pdev->dev);
+	if (ret < 0)
+		goto out_probe_notify;
 
 	/* Setup Hardware */
 	regmap_write(ao_cec->regmap, CECB_GEN_CNTL_REG, CECB_GEN_CNTL_RESET);
@@ -767,14 +765,14 @@ static int meson_ao_cec_g12a_probe(struct platform_device *pdev)
 
 	return 0;
 
+out_probe_notify:
+	cec_notifier_put(ao_cec->notify);
+
 out_probe_core_clk:
 	clk_disable_unprepare(ao_cec->core);
 
 out_probe_adapter:
 	cec_delete_adapter(ao_cec->adap);
-
-out_probe_notify:
-	cec_notifier_put(ao_cec->notify);
 
 	dev_err(&pdev->dev, "CEC controller registration failed\n");
 
