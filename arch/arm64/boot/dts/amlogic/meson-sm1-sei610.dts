@@ -61,7 +61,7 @@
 		reset-gpios = <&gpio BOOT_12 GPIO_ACTIVE_LOW>;
 	};
 
-	gpio-keys {
+	gpio-keys-polled {
 		compatible = "gpio-keys-polled";
 		poll-interval = <100>;
 
@@ -81,6 +81,12 @@
 			label = "C";
 			linux,code = <BTN_2>;
 			gpios = <&gpio_ao GPIOAO_2 GPIO_ACTIVE_LOW>;
+		};
+
+		power_key {
+			label = "PowerKey";
+			linux,code = <KEY_POWER>;
+			gpios = <&gpio_ao GPIOAO_3 GPIO_ACTIVE_LOW>;
 		};
 
 		mic_mute {
