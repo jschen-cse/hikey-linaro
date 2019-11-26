@@ -13,6 +13,7 @@ LZ4_PREBUILTS_BIN=prebuilts/misc/linux-x86/lz4
 FILES="
 arch/arm64/boot/dts/amlogic/meson-g12a-sei510.dtb
 arch/arm64/boot/dts/amlogic/meson-sm1-sei610.dtb
+arch/arm64/boot/dts/amlogic/meson-sm1-khadas-vim3l.dtb
 arch/arm64/boot/Image
 arch/arm64/boot/Image.gz
 arch/arm64/boot/Image.lz4
