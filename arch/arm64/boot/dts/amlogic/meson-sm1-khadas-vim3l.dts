@@ -31,6 +31,23 @@
 		regulator-boot-on;
 		regulator-always-on;
 	};
+
+	firmware {
+		android {
+			compatible = "android,firmware";
+			fstab {
+				compatible = "android,fstab";
+				vendor {
+					compatible = "android,vendor";
+					dev = "/dev/block/platform/soc/ffe07000.mmc/by-name/vendor ";
+					type = "ext4";
+					mnt_flags = "ro" ;
+					fsmgr_flags = "wait";
+				};
+			};
+		};
+	};
+
 };
 
 &cpu0 {
