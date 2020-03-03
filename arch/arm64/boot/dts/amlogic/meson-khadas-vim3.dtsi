@@ -438,9 +438,23 @@
 };
 
 &uart_C {
-	status = "okay";
+	status = "disabled";
 	pinctrl-0 = <&uart_c_pins>;
 	pinctrl-names = "default";
+};
+
+&spicc1 {
+	status = "okay";
+	pinctrl-names = "default";
+	pinctrl-0 = <&spicc1_pins>;
+	cs-gpios = <&gpio GPIOH_6 GPIO_ACTIVE_LOW>;
+
+	spidev@0 {
+		compatible = "rohm,dh2228fv";
+		reg = <0>;
+		spi-max-frequency = <500000>;
+		status = "okay";
+	};
 };
 
 &usb2_phy0 {
