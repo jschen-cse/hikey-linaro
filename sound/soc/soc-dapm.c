@@ -4290,7 +4290,7 @@ void snd_soc_dapm_connect_dai_link_widgets(struct snd_soc_card *card)
 		 * dynamic FE links have no fixed DAI mapping.
 		 * CODEC<->CODEC links have no direct connection.
 		 */
-		if (rtd->dai_link->dynamic)
+		if (rtd->dai_link->dynamic || rtd->dai_link->dynamic_be)
 			continue;
 
 		dapm_connect_dai_link_widgets(card, rtd);
