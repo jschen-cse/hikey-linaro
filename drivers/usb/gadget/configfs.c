@@ -1748,7 +1748,9 @@ static int android_device_create(struct gadget_info *gi)
 
 static void android_device_destroy(struct config_item *item)
 {
+#ifdef CONFIG_USB_CONFIGFS_WAKELOCK
 	struct gadget_info *gi = to_gadget_info(item);
+#endif
 	struct device_attribute **attrs;
 	struct device_attribute *attr;
 
