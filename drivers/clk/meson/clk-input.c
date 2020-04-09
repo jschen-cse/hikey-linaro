@@ -18,7 +18,7 @@ struct clk_hw *meson_clk_hw_register_input(struct device *dev,
 					   unsigned long flags)
 {
 	struct clk *parent_clk = devm_clk_get(dev, of_name);
-	struct clk_init_data init;
+	struct clk_init_data init = {0};
 	const char *parent_name;
 	struct clk_hw *hw;
 	int ret;

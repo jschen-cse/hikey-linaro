@@ -94,7 +94,7 @@ static struct clk *meson8b_dwmac_register_clk(struct meson8b_dwmac *dwmac,
 					      const struct clk_ops *ops,
 					      struct clk_hw *hw)
 {
-	struct clk_init_data init;
+	struct clk_init_data init = {0};
 	char clk_name[32];
 
 	snprintf(clk_name, sizeof(clk_name), "%s#%s", dev_name(dwmac->dev),

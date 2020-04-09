@@ -520,7 +520,7 @@ MODULE_DEVICE_TABLE(of, meson_pwm_matches);
 static int meson_pwm_init_channels(struct meson_pwm *meson)
 {
 	struct device *dev = meson->chip.dev;
-	struct clk_init_data init;
+	struct clk_init_data init = {0};
 	unsigned int i;
 	char name[255];
 	int err;
