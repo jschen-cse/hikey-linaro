@@ -23,7 +23,7 @@
 
 		button-onoff {
 			label = "On/Off";
-			linux,code = <BTN_0>;
+			linux,code = <KEY_POWER>;
 			press-threshold-microvolt = <1700000>;
 		};
 	};
