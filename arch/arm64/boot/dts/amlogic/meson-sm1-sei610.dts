@@ -80,14 +80,6 @@
 			interrupt-parent = <&gpio_intc>;
 			interrupts = <99 IRQ_TYPE_EDGE_BOTH>;
 		};
-
-		power_key {
-			label = "PowerKey";
-			linux,code = <KEY_POWER>;
-			gpios = <&gpio_ao GPIOAO_3 GPIO_ACTIVE_LOW>;
-			interrupt-parent = <&gpio_intc>;
-			interrupts = <3 IRQ_TYPE_EDGE_BOTH>;
-		};
 	};
 
 	hdmi-connector {
