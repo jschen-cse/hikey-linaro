@@ -2722,6 +2722,7 @@ int snd_soc_register_card(struct snd_soc_card *card)
 	mutex_init(&card->mutex);
 	mutex_init(&card->dapm_mutex);
 	spin_lock_init(&card->dpcm_lock);
+	mutex_init(&card->dapm_power_mutex);
 
 	ret = snd_soc_instantiate_card(card);
 	if (ret != 0)
@@ -3706,7 +3707,7 @@ int snd_soc_info_multi_ext(struct snd_kcontrol *kcontrol,
 	uinfo->value.integer.max = platform_max;
 	return 0;
 }
-EXPORT_SYMBOL(snd_soc_info_multi_ext);
+EXPORT_SYMBOL_GPL(snd_soc_info_multi_ext);
 
 int snd_soc_get_dai_name(struct of_phandle_args *args,
 				const char **dai_name)

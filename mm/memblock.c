@@ -803,6 +803,7 @@ int __init_memblock memblock_free(phys_addr_t base, phys_addr_t size)
 	kmemleak_free_part_phys(base, size);
 	return memblock_remove_range(&memblock.reserved, base, size);
 }
+EXPORT_SYMBOL_GPL(memblock_free);
 
 int __init_memblock memblock_reserve(phys_addr_t base, phys_addr_t size)
 {
@@ -1780,6 +1781,7 @@ bool __init_memblock memblock_overlaps_memory(phys_addr_t base,
 
 	return memblock_overlaps_region(&memblock.memory, base, size);
 }
+EXPORT_SYMBOL_GPL(memblock_overlaps_memory);
 
 /**
  * memblock_is_region_reserved - check if a region intersects reserved memory
