@@ -40,58 +40,6 @@
 		stdout-path = "serial0:115200n8";
 	};
 
-	overlay_mgr {
-		compatible = "linux,overlay_manager";
-		hardware_cfg_spicc_x {
-			overlay_0 {
-				fragment@0 {
-					target-path="/audio-controller-0";
-					__overlay__ {
-						status = "disabled";
-					};
-				};
-				fragment@1 {
-					target-path="/audio-codec-0";
-					__overlay__ {
-						status = "disabled";
-					};
-				};
-				fragment@2 {
-					target-path="/sound";
-					__overlay__ {
-						status = "disabled";
-					};
-				};
-				fragment@3 {
-					target-path="/soc/bus@ffd00000/spi@13000";
-					__overlay__ {
-						status = "ok";
-					};
-				};
-			};
-		};
-		hardware_cfg_spidev0 {
-			overlay_0 {
-				fragment@0 {
-					target-path="/soc/bus@ffd00000/spi@13000/spidev@0";
-					__overlay__ {
-						status = "ok";
-					};
-				};
-			};
-		};
-		hardware_cfg_disable_bt {
-			overlay_0 {
-				fragment@0 {
-					target-path="/soc/bus@ffd00000/serial@24000/bluetooth";
-					__overlay__ {
-						status = "disabled";
-					};
-				};
-			};
-		};
-	};
-
 	emmc_pwrseq: emmc-pwrseq {
 		compatible = "mmc-pwrseq-emmc";
 		reset-gpios = <&gpio BOOT_12 GPIO_ACTIVE_LOW>;
@@ -122,23 +70,6 @@
 			gpios = <&gpio_ao GPIOAO_2 GPIO_ACTIVE_LOW>;
 			interrupt-parent = <&gpio_intc>;
 			interrupts = <2 IRQ_TYPE_EDGE_BOTH>;
-		};
-
-		mic_mute {
-			label = "MicMute";
-			linux,code = <SW_MUTE_DEVICE>;
-			linux,input-type = <EV_SW>;
-			gpios = <&gpio_ao GPIOE_2 GPIO_ACTIVE_LOW>;
-			interrupt-parent = <&gpio_intc>;
-			interrupts = <99 IRQ_TYPE_EDGE_BOTH>;
-		};
-
-		power_key {
-			label = "PowerKey";
-			linux,code = <KEY_POWER>;
-			gpios = <&gpio_ao GPIOAO_3 GPIO_ACTIVE_LOW>;
-			interrupt-parent = <&gpio_intc>;
-			interrupts = <3 IRQ_TYPE_EDGE_BOTH>;
 		};
 	};
 
@@ -223,7 +154,6 @@
 		regulator-max-microvolt = <3300000>;
 		vin-supply = <&vddao_3v3>;
 		gpio = <&gpio GPIOH_8 GPIO_OPEN_DRAIN>;
-		gpio-open-drain;
 		enable-active-low;
 		regulator-always-on;
 	};
@@ -261,14 +191,6 @@
 		bl32_reserved: bl32@5000000 {
 			reg = <0x0 0x05300000 0x0 0x2000000>;
 			no-map;
-		};
-		ramoops@0x0d000000 {
-			compatible = "ramoops";
-			reg = <0x0 0x0d000000 0x0 0x00100000>;
-			record-size = <0x8000>;
-			console-size = <0x8000>;
-			ftrace-size = <0x0>;
-			pmsg-size = <0x8000>;
 		};
 	};
 
@@ -661,7 +583,6 @@
 		clock-names = "lpo";
 		vbat-supply = <&vddao_3v3>;
 		vddio-supply = <&vddio_ao1v8>;
-		status = "okay";
 	};
 };
 
@@ -675,18 +596,4 @@
 &usb {
 	status = "okay";
 	dr_mode = "otg";
-};
-
-&spicc0 {
-	status = "disabled";
-	pinctrl-names = "default";
-	pinctrl-0 = <&spicc0_x_pins>;
-	cs-gpios = <&gpio GPIOX_10 GPIO_ACTIVE_LOW>;
-
-	spidev@0 {
-		compatible = "rohm,dh2228fv";
-		reg = <0>;
-		spi-max-frequency = <500000>;
-		status = "disabled";
-	};
 };

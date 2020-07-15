@@ -14,7 +14,6 @@
 
 	aliases {
 		serial0 = &uart_AO;
-		serial1 = &uart_C;
 		ethernet0 = &ethmac;
 	};
 
@@ -147,9 +146,9 @@
 		regulator-min-microvolt = <5000000>;
 		regulator-max-microvolt = <5000000>;
 		vin-supply = <&dc_in>;
+
 		gpio = <&gpio GPIOH_8 GPIO_OPEN_DRAIN>;
 		enable-active-high;
-		gpio-open-drain;
 	};
 
 	vcc_1v8: regulator-vcc_1v8 {
@@ -351,9 +350,6 @@
 	non-removable;
 	disable-wp;
 
-	/* WiFi firmware requires power to be kept while in suspend */
-	keep-power-in-suspend;
-
 	mmc-pwrseq = <&sdio_pwrseq>;
 
 	vmmc-supply = <&vsys_3v3>;
@@ -435,26 +431,6 @@
 	status = "okay";
 	pinctrl-0 = <&uart_ao_a_pins>;
 	pinctrl-names = "default";
-};
-
-&uart_C {
-	status = "disabled";
-	pinctrl-0 = <&uart_c_pins>;
-	pinctrl-names = "default";
-};
-
-&spicc1 {
-	status = "okay";
-	pinctrl-names = "default";
-	pinctrl-0 = <&spicc1_pins>;
-	cs-gpios = <&gpio GPIOH_6 GPIO_ACTIVE_LOW>;
-
-	spidev@0 {
-		compatible = "rohm,dh2228fv";
-		reg = <0>;
-		spi-max-frequency = <500000>;
-		status = "okay";
-	};
 };
 
 &usb2_phy0 {

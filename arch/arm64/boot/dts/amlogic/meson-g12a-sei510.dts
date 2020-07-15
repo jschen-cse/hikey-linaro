@@ -23,7 +23,7 @@
 
 		button-onoff {
 			label = "On/Off";
-			linux,code = <BTN_0>;
+			linux,code = <KEY_POWER>;
 			press-threshold-microvolt = <1700000>;
 		};
 	};
@@ -55,7 +55,6 @@
 
 	cvbs-connector {
 		compatible = "composite-video-connector";
-		status = "disabled";
 
 		port {
 			cvbs_connector_in: endpoint {
@@ -127,7 +126,6 @@
 		regulator-max-microvolt = <3300000>;
 		vin-supply = <&vddao_3v3>;
 		gpio = <&gpio GPIOH_8 GPIO_OPEN_DRAIN>;
-		gpio-open-drain;
 		enable-active-high;
 	};
 
@@ -164,14 +162,6 @@
 		bl32_reserved: bl32@5000000 {
 			reg = <0x0 0x05300000 0x0 0x2000000>;
 			no-map;
-		};
-		ramoops@0x0d000000 {
-			compatible = "ramoops";
-			reg = <0x0 0x0d000000 0x0 0x00100000>;
-			record-size = <0x8000>;
-			console-size = <0x8000>;
-			ftrace-size = <0x0>;
-			pmsg-size = <0x8000>;
 		};
 	};
 

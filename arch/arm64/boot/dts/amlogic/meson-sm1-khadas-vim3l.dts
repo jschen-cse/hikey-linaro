@@ -31,26 +31,6 @@
 		regulator-boot-on;
 		regulator-always-on;
 	};
-
-	overlay_mgr {
-		compatible = "linux,overlay_manager";
-		hardware_cfg_uart_c {
-			overlay_0 {
-				fragment@0 {
-					target-path="/soc/bus@ffd00000/spi@15000";
-					__overlay__ {
-						status = "disabled";
-					};
-				};
-				fragment@1 {
-					target-path="/soc/bus@ffd00000/serial@22000";
-					__overlay__ {
-						status = "okay";
-					};
-				};
-			};
-		};
-	};
 };
 
 &cpu0 {
