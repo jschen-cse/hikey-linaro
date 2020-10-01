@@ -16,6 +16,8 @@ arch/arm64/boot/dts/amlogic/meson-g12a-sei510.dtb
 arch/arm64/boot/dts/amlogic/meson-g12a-sei510-android.dtb
 arch/arm64/boot/dts/amlogic/meson-sm1-sei610.dtb
 arch/arm64/boot/dts/amlogic/meson-sm1-sei610-android.dtb
+arch/arm64/boot/dts/amlogic/meson-g12b-a311d-khadas-vim3.dtb
+arch/arm64/boot/dts/amlogic/meson-g12b-a311d-khadas-vim3-android.dtb
 arch/arm64/boot/dts/amlogic/meson-sm1-khadas-vim3l.dtb
 arch/arm64/boot/dts/amlogic/meson-sm1-khadas-vim3l-android.dtb
 arch/arm64/boot/Image.lz4
