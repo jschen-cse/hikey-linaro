@@ -49,6 +49,22 @@
                                        };
                                };
                        };
+                       hardware_cfg_neonkey {
+                               overlay_0 {
+                                       fragment@0 {
+                                               target-path="/soc/bus@ffd00000/spi@15000/spidev@0";
+                                               __overlay__ {
+                                                       status = "disabled";
+                                               };
+                                       };
+                                       fragment@1 {
+                                               target-path="/soc/bus@ffd00000/spi@15000/sensorhub@0";
+                                               __overlay__ {
+                                                       status = "okay";
+                                               };
+                                       };
+                               };
+                       };
                };
         };
   };
@@ -87,4 +103,29 @@
                 spi-max-frequency = <500000>;
                 status = "okay";
         };
+
+	sensorhub@0 {
+		compatible = "nanohub";
+		reg = <0>;
+		spi-max-frequency = <50000>;
+
+		sensorhub,nreset-gpio = <&gpio GPIOA_0 0>;
+		sensorhub,boot0-gpio = <&gpio GPIOA_3 0>;   /* Fake */
+		sensorhub,wakeup-gpio = <&gpio GPIOA_1 0>;  /* A1 -> PB9 */
+		sensorhub,irq1-gpio = <&gpio GPIOA_2 0>;    /* A2 -> PB5 */
+		interrupt-parent = <&gpio_intc>;
+		interrupts = <63 IRQ_TYPE_EDGE_RISING>;     /* A2 */
+		/* sensorhub,spi-cs-gpio = <&gpio GPIOH_6 GPIO_ACTIVE_LOW>; Optional */
+		sensorhub,bl-addr = <0x08000000>;
+		sensorhub,kernel-addr = <0x0800C000>;
+		sensorhub,shared-addr = <0x08040000>;
+		sensorhub,flash-banks = <0 0x08000000 0x04000>,
+					<3 0x0800C000 0x04000>,
+					<4 0x08010000 0x10000>,
+					<5 0x08020000 0x20000>,
+					<6 0x08040000 0x20000>,
+					<7 0x08060000 0x20000>;
+		sensorhub,num-flash-banks = <6>;
+		status = "disabled";
+	};
 };
