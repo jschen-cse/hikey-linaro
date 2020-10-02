@@ -59,7 +59,7 @@
 };
 
 &uart_C {
-        status = "okay";
+        status = "disabled";
         pinctrl-0 = <&uart_c_pins>;
         pinctrl-names = "default";
 };
