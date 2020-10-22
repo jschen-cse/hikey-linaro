@@ -111,4 +111,10 @@ config EEPROM_IDT_89HPESX
 	  This driver can also be built as a module. If so, the module
 	  will be called idt_89hpesx.
 
+config EEPROM_MB85RS
+	tristate "Fujitsu SPI MB85RS FRAM(Ferroelectronic RAM) driver"
+	depends on SPI && SYSFS
+	help
+	  Enable this driver to get read/write support to Fujitsu MB85RS.
+
 endmenu
