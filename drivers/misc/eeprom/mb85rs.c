@@ -21,6 +21,7 @@
 
 #include <linux/spi/spi.h>
 #include <linux/gpio.h>
+#include <linux/gpio/consumer.h>
 
 #define FUJITSU_MID 0x04
 
@@ -283,6 +284,18 @@ static void mb85rs_write_protect(struct mb85rs_data *mb85rs, int enable)
 		gpio_set_value(mb85rs->wp_gpio, 1);
 }
 
+static int mb85rs_dt_read(struct device *dev, int *pwp_gpio)
+{
+	struct gpio_desc *wp_gpiod = devm_gpiod_get(dev, "wp", GPIOD_OUT_LOW);
+
+	if (!wp_gpiod)
+		return -ENODEV;
+	*pwp_gpio = desc_to_gpio(wp_gpiod);
+	gpiod_put(wp_gpiod);
+	dev_warn(dev, "WP_GPIO = %d\n", *pwp_gpio);
+	return 0;
+}
+
 static int mb85rs_probe(struct spi_device *spi)
 {
 	struct mb85rs_data *mb85rs = NULL;
@@ -292,11 +305,15 @@ static int mb85rs_probe(struct spi_device *spi)
 	u8 bp;
 
 	if (!spi->dev.platform_data) {
-		dev_err(&spi->dev, "need the platform data(wp gpio)\n");
-		return -EINVAL;
+		err = mb85rs_dt_read(&spi->dev, &wp_gpio);
+		if (err) {
+			dev_err(&spi->dev, "need the platform data(wp gpio)\n");
+			return err;
+		}
+	} else {
+		wp_gpio = *(int *)spi->dev.platform_data;
 	}
 
-	wp_gpio = *(int *)spi->dev.platform_data;
 	err = gpio_request(wp_gpio, "mb85rs_wp");
 	if (err) {
 		dev_err(&spi->dev, "failed req gpio %d\n", wp_gpio);
