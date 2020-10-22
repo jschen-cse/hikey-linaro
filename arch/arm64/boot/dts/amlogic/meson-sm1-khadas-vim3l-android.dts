@@ -65,6 +65,22 @@
                                        };
                                };
                        };
+                       hardware_cfg_mb85rs {
+                               overlay_0 {
+                                       fragment@0 {
+                                               target-path="/soc/bus@ffd00000/spi@15000/spidev@0";
+                                               __overlay__ {
+                                                       status = "disabled";
+                                               };
+                                       };
+                                       fragment@1 {
+                                               target-path="/soc/bus@ffd00000/spi@15000/eeprom@0";
+                                               __overlay__ {
+                                                       status = "okay";
+                                               };
+                                       };
+                               };
+                       };
                };
         };
   };
@@ -103,6 +119,14 @@
                 spi-max-frequency = <500000>;
                 status = "okay";
         };
+
+	eeprom@0 {
+		compatible = "mb85rs";
+		reg = <0>;
+		spi-max-frequency = <500000>;
+		wp-gpios = <&gpio GPIOA_0 GPIO_ACTIVE_LOW>;
+		status = "disabled";
+	};
 
 	sensorhub@0 {
 		compatible = "nanohub";
