@@ -65,6 +65,22 @@
                                        };
                                };
                        };
+                       hardware_cfg_argonkey {
+                               overlay_0 {
+                                       fragment@0 {
+                                               target-path="/soc/bus@ffd00000/spi@15000/spidev@0";
+                                               __overlay__ {
+                                                       status = "disabled";
+                                               };
+                                       };
+                                       fragment@1 {
+                                               target-path="/soc/bus@ffd00000/spi@15000/argonkey@0";
+                                               __overlay__ {
+                                                       status = "okay";
+                                               };
+                                       };
+                               };
+                       };
                        hardware_cfg_mb85rs {
                                overlay_0 {
                                        fragment@0 {
@@ -150,6 +166,36 @@
 					<6 0x08040000 0x20000>,
 					<7 0x08060000 0x20000>;
 		sensorhub,num-flash-banks = <6>;
+		status = "disabled";
+	};
+
+	argonkey@0 {
+		compatible = "nanohub";
+		reg = <0>;
+		spi-max-frequency = <500000>;
+		spi-cpol;
+
+		sensorhub,nreset-gpio = <&gpio GPIOA_0 0>;
+		sensorhub,boot0-gpio = <&gpio GPIOA_3 0>;
+		sensorhub,wakeup-gpio = <&gpio GPIOA_1 0>;  /* A1 -> PA0 */
+		sensorhub,irq1-gpio = <&gpio GPIOA_2 0>;    /* A2 -> PA1 */
+		interrupt-parent = <&gpio_intc>;
+		interrupts = <63 IRQ_TYPE_EDGE_RISING>;     /* A2 */
+		sensorhub,bl-addr = <0x08000000>;
+		sensorhub,kernel-addr = <0x0800C000>;
+		sensorhub,num-flash-banks = <4>;
+		sensorhub,flash-banks =	<0 0x08000000 0x04000>,
+					<3 0x0800C000 0x04000>,
+					<4 0x08010000 0x10000>,
+					<5 0x08020000 0x20000>;
+		sensorhub,shared-addr = <0x08040000>;
+		sensorhub,num-shared-flash-banks = <6>;
+		sensorhub,shared-flash-banks = <6 0x08040000 0x20000>,
+					<7 0x08060000 0x20000>,
+					<8 0x08080000 0x20000>,
+					<9 0x080A0000 0x20000>,
+					<10 0x080C0000 0x20000>,
+					<11 0x080E0000 0x20000>;
 		status = "disabled";
 	};
 };
