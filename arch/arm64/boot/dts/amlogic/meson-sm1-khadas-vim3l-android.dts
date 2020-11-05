@@ -58,7 +58,7 @@
                                                };
                                        };
                                        fragment@1 {
-                                               target-path="/soc/bus@ffd00000/spi@15000/sensorhub@0";
+                                               target-path="/soc/bus@ffd00000/spi@15000/neonkey@0";
                                                __overlay__ {
                                                        status = "okay";
                                                };
@@ -128,17 +128,17 @@
 		status = "disabled";
 	};
 
-	sensorhub@0 {
+	neonkey@0 {
 		compatible = "nanohub";
 		reg = <0>;
-		spi-max-frequency = <50000>;
+		spi-max-frequency = <500000>;
 
 		sensorhub,nreset-gpio = <&gpio GPIOA_0 0>;
 		sensorhub,boot0-gpio = <&gpio GPIOA_3 0>;   /* Fake */
-		sensorhub,wakeup-gpio = <&gpio GPIOA_1 0>;  /* A1 -> PB9 */
-		sensorhub,irq1-gpio = <&gpio GPIOA_2 0>;    /* A2 -> PB5 */
+		sensorhub,wakeup-gpio = <&gpio GPIOA_2 0>;  /* A2 -> PB9 */
+		sensorhub,irq1-gpio = <&gpio GPIOA_1 0>;    /* A1 -> PB5 */
 		interrupt-parent = <&gpio_intc>;
-		interrupts = <63 IRQ_TYPE_EDGE_RISING>;     /* A2 */
+		interrupts = <62 IRQ_TYPE_EDGE_RISING>;     /* A1 */
 		/* sensorhub,spi-cs-gpio = <&gpio GPIOH_6 GPIO_ACTIVE_LOW>; Optional */
 		sensorhub,bl-addr = <0x08000000>;
 		sensorhub,kernel-addr = <0x0800C000>;
