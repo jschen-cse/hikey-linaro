@@ -1,7 +1,7 @@
 . ${ROOT_DIR}/hikey-linaro/build.config.common
 . ${ROOT_DIR}/hikey-linaro/build.config.aarch64
 
-BRANCH=mirror-aosp-android-amlogic-bmeson-4.19
+BRANCH=android-amlogic-bmeson-4.19
 DEFCONFIG=meson_defconfig
 KERNEL_DIR=hikey-linaro
 POST_DEFCONFIG_CMDS="check_defconfig"
