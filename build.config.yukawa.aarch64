@@ -30,7 +30,7 @@ function lz4_compress() {
 }
 
 function rename_file(){
-        KERN_VER=$(echo "$BRANCH" | cut -f 6 -d "-")
+        KERN_VER=$(echo "$BRANCH" | cut -f 4 -d "-")
         for FILE in ${FILES}; do
             if [ -f ${DIST_DIR}/${FILE##*/} ]; then
                   cp -p ${DIST_DIR}/${FILE##*/} ${DIST_DIR}/${FILE##*/}-${KERN_VER}
