@@ -5,7 +5,6 @@ BRANCH=android-amlogic-bmeson-4.19
 DEFCONFIG=meson_defconfig
 KERNEL_DIR=hikey-linaro
 POST_DEFCONFIG_CMDS="check_defconfig"
-LZ4_PREBUILTS_BIN=prebuilts/misc/linux-x86/lz4
 STOP_SHIP_TRACEPRINTK=1
 SKIP_CP_KERNEL_HDR=1
 # this is needed to generate __symbols__ for u-boot
@@ -26,7 +25,7 @@ EXTRA_CMDS="lz4_compress"
 DIST_CMDS="rename_file"
 
 function lz4_compress() {
-        ./${LZ4_PREBUILTS_BIN}/lz4c -f ${OUT_DIR}/arch/arm64/boot/Image ${OUT_DIR}/arch/arm64/boot/Image.lz4
+        lz4 -f -12 --favor-decSpeed ${OUT_DIR}/arch/arm64/boot/Image ${OUT_DIR}/arch/arm64/boot/Image.lz4
 }
 
 function rename_file(){
