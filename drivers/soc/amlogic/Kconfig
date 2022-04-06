@@ -57,4 +57,6 @@ config MESON_MX_SOCINFO
 	  Meson8b and Meson8m2 SoC family information about the type
 	  and version.
 
+
+source "drivers/soc/amlogic/bluetooth/Kconfig"
 endmenu
